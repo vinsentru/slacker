@@ -2,7 +2,7 @@
 
 -include("spec.hrl").
 
--export([create/2, info/2, join/2, leave/2, history/2,
+-export([create/2, info/2, join/2, leave/2, history/2,history_ext/6,
          mark/3, invite/3, list/1, kick/3, rename/3,
          set_purpose/3, set_topic/3]).
 
@@ -18,9 +18,9 @@ info(Token, Channel) ->
     slacker_request:send("channels.info", [{"token", Token},{"channel", Channel}]).
 
 %% @doc Join a channel. If the channel does not exist, it is created.
--spec join(Token :: string(), Channel :: string()) -> http_response().
-join(Token, Channel) ->
-    slacker_request:send("channels.join", [{"token", Token},{"channel", Channel}]).
+-spec join(Token :: string(), Name :: string()) -> http_response().
+join(Token, Name) ->
+    slacker_request:send("channels.join", [{"token", Token},{"name", Name}]).
 
 %% @doc Leave a channel.
 -spec leave(Token :: string(), Channel :: string()) -> http_response().
@@ -31,6 +31,10 @@ leave(Token, Channel) ->
 -spec history(Token :: string(), Channel :: string()) -> http_response().
 history(Token, Channel) ->
     slacker_request:send("channels.history", [{"token", Token},{"channel", Channel}]).
+
+-spec history_ext(Token :: string(), Channel :: string(), Latest :: string(), Oldest :: string(), Inclusive :: string(), Count :: string() ) -> http_response().    
+history_ext(Token, Channel, Latest, Oldest, Inclusive, Count) ->
+    slacker_request:send("channels.history", [{"token", Token},{"channel", Channel},{"latest", Latest},{"oldest", Oldest},{"inclusive", Inclusive},{"count", Count}]).    
 
 %% @doc Set read cursor in a channel.
 -spec mark(Token :: string(), Channel :: string(), Timestamp :: string()) -> http_response().

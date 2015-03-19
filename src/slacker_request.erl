@@ -1,6 +1,6 @@
 -module(slacker_request).
 
--export([send/2]).
+-export([send/2,parse/1]).
 
 -define(API_URL, "https://slack.com/api/").
 
@@ -9,3 +9,7 @@
 send(Endpoint, Params) ->
     URL = restc:construct_url(?API_URL, Endpoint, Params),
     restc:request(get, URL).
+
+parse(Response) ->
+	{ok,200,Headers,Body} = Response,
+	Body.
